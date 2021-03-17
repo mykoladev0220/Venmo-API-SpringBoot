@@ -18,4 +18,4 @@
 * Wrote model classes for Transfer, Account, and User objects used for JSON serialization. (Transfer.java, Account.java, User.java)
 * Coded service classes that create and send authenticated objects to the API server using RestTemplate class. (TransferService.java, AccountService.java, UserService.java)
 * Included methods to generate authentic entities using HttpEntity class that sets bearer token into HttpHeaders included in requests.
-* Pogrammed methods to display returning information to the user in the console. (ConsoleService.java)
+* Programmed methods to display returning information to the user in the console. (ConsoleService.java)
