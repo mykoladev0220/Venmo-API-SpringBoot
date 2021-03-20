@@ -27,35 +27,29 @@ public class UserService {
 	}
 
 	public List<User> listAllUsers(int idToRemove) {
-
 		User[] users = null;
-
 		users = restTemplate.exchange(BASE_URL + "users/", HttpMethod.GET, makeAuthEntity(), User[].class).getBody();
-		List<User> usersWithout = new ArrayList<>();
-
+		
+		List<User> usersWithoutId = new ArrayList<>();
 		for (int i=0; i<users.length; i++) {
 			if (users[i].getId() != idToRemove) {
-				usersWithout.add(users[i]);
+				usersWithoutId.add(users[i]);
 			}
 		}
-		return usersWithout;
+		return usersWithoutId;
 	}
 
 	public BigDecimal getBalanceByExchange() {
 		BigDecimal currentBalance = new BigDecimal("0");
-		currentBalance = restTemplate.exchange
-				(BASE_URL + "balance/" + App.USERNAME
-						, HttpMethod.GET, makeAuthEntity(), BigDecimal.class).getBody();
+		currentBalance = restTemplate.exchange (BASE_URL + "balance/" + App.USERNAME, HttpMethod.GET, makeAuthEntity(), BigDecimal.class).getBody();
 		return currentBalance;
 	}
 
 	public boolean validateTransfer(int receiverId, BigDecimal amountToSend, String sender, int senderId) {
-
 		boolean isSuccessful = false;
 		boolean validUser = false;
-		
-		List<User> users = listAllUsers(senderId);
 
+		List<User> users = listAllUsers(senderId);
 		for (User user : users) {
 			if (user.getId() == receiverId) {
 				validUser = true;
@@ -66,13 +60,13 @@ public class UserService {
 			System.out.println("Invalid user!");
 			return isSuccessful;
 		}
-
+		
 		if (getBalanceByExchange().compareTo(amountToSend) >= 0 && validUser) {
-
 			System.out.println("\nTransaction successful!");
 			return isSuccessful = true;
 
-		} else {
+		} 
+		else {
 			System.out.println("\nInsufficient funds!");
 			return isSuccessful = false;
 		}
