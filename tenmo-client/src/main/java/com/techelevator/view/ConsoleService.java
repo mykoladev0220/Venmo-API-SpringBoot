@@ -16,7 +16,7 @@ import com.techelevator.tenmo.models.Transfer;
 import com.techelevator.tenmo.models.User;
 
 public class ConsoleService {
-	
+
 	private static final String API_BASE_URL = "http://localhost:8080/";
 	private final RestTemplate restTemplate = new RestTemplate();
 	private PrintWriter out;
@@ -81,87 +81,83 @@ public class ConsoleService {
 			} catch(NumberFormatException e) {
 				out.println(System.lineSeparator() + "*** " + userInput + " is not valid ***" + System.lineSeparator());
 			}
-		} while(result == null);
+		} while (result == null);
 		return result;
 	}
-	
+
 	public void printUsers(List<User> users) {
-        if (users != null) {
-            System.out.println("-------------------------------------------");
-            System.out.println("Users");
-            System.out.println("ID          Name");
-            System.out.println("-------------------------------------------");
-            for (User user : users) {
-                System.out.println(user.getId() + "        " + user.getUsername());
-            }
-            System.out.println("---------\n");
-        }
-    }
-	
+		if (users != null) {
+			System.out.println("-------------------------------------------");
+			System.out.println("Users");
+			System.out.println("ID          Name");
+			System.out.println("-------------------------------------------");
+			for (User user : users) {
+				System.out.println(user.getId() + "        " + user.getUsername());
+			}
+			System.out.println("---------\n");
+		}
+	}
+
 	public void printTransfers(Transfer[] transfers, int accountId) {
 		System.out.println("-------------------------------------------");
 		System.out.println("Transfers");
 		System.out.println("\nID          From/To             Amount");
 		System.out.println("-------------------------------------------");
-		
+
 		String currentTo = "";
 		String currentFrom = "";
-		
+
 		for (Transfer tran : transfers) {
 			System.out.print(tran.getTransfer_id() + "        ");
-					if (tran.getAccount_from() == accountId) {
-						
-						currentTo =	restTemplate.exchange(API_BASE_URL + "users/account/" + tran.getAccount_to(),
-						HttpMethod.GET, makeAuthEntity(),  String.class).getBody();
-						System.out.print("To: " + currentTo);
-						
-					} else {
-						currentFrom = restTemplate.exchange(API_BASE_URL + "users/account/" + tran.getAccount_from(),
-						HttpMethod.GET, makeAuthEntity(),  String.class).getBody();
-						System.out.print("From: " + currentFrom);
-					} 
-					// added tabs to help format
-					System.out.println("    \t$" + tran.getAmount());
+			if (tran.getAccount_from() == accountId) {
+				currentTo = restTemplate.exchange(API_BASE_URL + "users/account/" + tran.getAccount_to(), HttpMethod.GET, makeAuthEntity(),  String.class).getBody();
+				System.out.print("To: " + currentTo);
+			} 
+			else {
+				currentFrom = restTemplate.exchange(API_BASE_URL + "users/account/" + tran.getAccount_from(), HttpMethod.GET, makeAuthEntity(),  String.class).getBody();
+				System.out.print("From: " + currentFrom);
+			} 
+			System.out.println("    \t$" + tran.getAmount());
 		}
 		System.out.println("---------");
 	}
-	
+
 	public void printApproveorDeny() {
 		System.out.println("1: Approve");
 		System.out.println("2: Reject");
 		System.out.println("0: Don't approve or reject");
 		System.out.println("---------");
 	}
-	
+
 	public boolean printTransferDetailByID(int transferId, Transfer[] transfer) {
 		Transfer result = null;
 		boolean success = false;
-		
+
 		if (transferId == 0) {
 			return success;
 		}
-		
+
 		for(int i = 0; i < transfer.length; i++) {
 			if (transfer[i].getTransfer_id() == transferId) {
 				result = transfer[i];
 				success = true;
 			}
 		}
-		
+
 		if (result == null) {
 			System.out.println("\nInvalid Transfer ID");
 			return success;
 		}
-		
+
 		String transferType = "";
 		if (result.getTransfer_type_id() == 1) {
 			transferType = "Request";
 		} else {
 			transferType = "Send";
 		}
-		
+
 		String transferStatus = "";
-		
+
 		if (result.getTransfer_status_id() == 1) {
 			transferStatus = "Pending";
 		} else if (result.getTransfer_status_id() == 2) {
@@ -169,27 +165,25 @@ public class ConsoleService {
 		} else {
 			transferStatus = "Rejected";
 		}
-		
+
 		System.out.println("--------------------------------------------");
 		System.out.println("Transfer Details");
 		System.out.println("--------------------------------------------");
 		System.out.println("Id: " + result.getTransfer_id());
-		System.out.println("From: " + restTemplate.exchange(API_BASE_URL + "users/account/" + result.getAccount_from(),
-								HttpMethod.GET, makeAuthEntity(),  String.class).getBody());
-		System.out.println("To: " +  restTemplate.exchange(API_BASE_URL + "users/account/" + result.getAccount_to(),
-				HttpMethod.GET, makeAuthEntity(),  String.class).getBody());
+		System.out.println("From: " + restTemplate.exchange(API_BASE_URL + "users/account/" + result.getAccount_from(), HttpMethod.GET, makeAuthEntity(),  String.class).getBody());
+		System.out.println("To: " +  restTemplate.exchange(API_BASE_URL + "users/account/" + result.getAccount_to(), HttpMethod.GET, makeAuthEntity(),  String.class).getBody());
 		System.out.println("Type: " + transferType);
 		System.out.println("Status: " + transferStatus);
 		System.out.println("Amount: $" + result.getAmount());
-		
+
 		return success;
 	}
-	
+
 	public HttpEntity makeAuthEntity() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setBearerAuth(App.AUTH_TOKEN);
 		HttpEntity entity = new HttpEntity<>(headers);
 		return entity;
 	}
-	
+
 }
