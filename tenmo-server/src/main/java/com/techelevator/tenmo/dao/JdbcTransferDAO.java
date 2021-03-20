@@ -21,10 +21,10 @@ public class JdbcTransferDAO implements TransferDAO{
 
 	@Override
 	public List<Transfer> getAllTransfers() {
-		List<Transfer> transfers = new ArrayList<>();
 		String sql = "SELECT * FROM transfers;";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
 
+		List<Transfer> transfers = new ArrayList<>();
 		while(results.next()) {
 			Transfer transfer = mapRowToTransfer(results);
 			transfers.add(transfer);
@@ -34,14 +34,10 @@ public class JdbcTransferDAO implements TransferDAO{
 	
 	@Override
 	public List<Transfer> getAllTransfersByAccountId(int accountId)  {
-		List<Transfer> transfers = new ArrayList<>();
-		
-		// maybe add the AND statement to only show accepted transfers, instead of all statuses ?
 		String sql = "SELECT * FROM transfers WHERE (account_from = ? OR account_to = ?) ";
-			//	+ "AND transfer_status_id = 2";
-		
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId, accountId);
 
+		List<Transfer> transfers = new ArrayList<>();
 		while(results.next()) {
 			Transfer transfer = mapRowToTransfer(results);
 			transfers.add(transfer);
@@ -49,12 +45,12 @@ public class JdbcTransferDAO implements TransferDAO{
 		return transfers;
 	}
 	
+	@Override
 	public List<Transfer> getPendingTransfersByAccountId(int accountId) {
-		
-		List<Transfer> transfers = new ArrayList<>();
 		String sql = "SELECT * FROM transfers WHERE (account_from = ? OR account_to = ?) AND transfer_status_id = 1";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId, accountId);
 
+		List<Transfer> transfers = new ArrayList<>();
 		if (results != null) {
 			while(results.next()) {
 				Transfer transfer = mapRowToTransfer(results);
@@ -64,37 +60,20 @@ public class JdbcTransferDAO implements TransferDAO{
 		return transfers;
 	}
 	
+	@Override
 	public void changeTransferStatusByTransferIdandStatus(int transferId, int transferStatus) {
-		
 		String sql = "UPDATE transfers SET transfer_status_id = ? WHERE transfer_id = ?";
 		jdbcTemplate.update(sql, transferStatus, transferId);
 	}
 	
 	@Override
 	public void send(Transfer transfer) {
-		
-//		Transfer sentTransfer = null;
-		
 		String sql = "INSERT INTO transfers (transfer_type_id,"
 				+ " transfer_status_id, account_from, account_to , amount)"
 				+ " VALUES (?, ?, ?, ?, ?)";
-//				+ " RETURNING transfer_id";
 
 		jdbcTemplate.update(sql, transfer.getTransfer_type_id(), transfer.getTransfer_status_id(),
 				transfer.getAccount_from(), transfer.getAccount_to(), transfer.getAmount());
-		
-//		Integer newTransferId = jdbcTemplate.queryForObject(sql, new Object[]{transfer.getTransfer_type_id(), transfer.getTransfer_status_id(),
-//				transfer.getAccount_from(), transfer.getAccount_to(), transfer.getAccount_from()} 
-//				 , Integer.class);
-
-		// retrieve transfer just made and return as object
-//		String sqlSelect = "SELECT * FROM transfers WHERE transfer_id = ?";
-//
-//		SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sqlSelect, newTransferId);
-//		if (rowSet.next()){
-//			sentTransfer = mapRowToTransfer(rowSet);
-//		}
-//		return sentTransfer;
 	}
 
 	private Transfer mapRowToTransfer(SqlRowSet rs) {
