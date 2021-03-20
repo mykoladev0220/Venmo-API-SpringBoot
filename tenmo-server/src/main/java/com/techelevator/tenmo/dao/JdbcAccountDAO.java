@@ -21,11 +21,10 @@ public class JdbcAccountDAO implements AccountDAO{
 
 	@Override
 	public int getAccountIdByUserId(int user_id) {
-		String sqlGET = "SELECT account_id FROM accounts WHERE user_id = ?";
+		String sql = "SELECT account_id FROM accounts WHERE user_id = ?";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user_id);
 		
 		int account = 0;
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGET, user_id);
-
 		if (results.next()) {
 			account = results.getInt("account_id");
 		}
@@ -34,11 +33,10 @@ public class JdbcAccountDAO implements AccountDAO{
 	
 	@Override
 	public BigDecimal getAccountBalanceByUserId(int user_id) {
-		String sqlGET = "SELECT balance FROM accounts WHERE user_id = ?";
-		
-		BigDecimal account = new BigDecimal("0");
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGET, user_id);
+		String sql = "SELECT balance FROM accounts WHERE user_id = ?";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user_id);
 
+		BigDecimal account = new BigDecimal("0");
 		if (results.next()) {
 			account = results.getBigDecimal("balance");
 		}
@@ -47,10 +45,8 @@ public class JdbcAccountDAO implements AccountDAO{
 	
 	@Override
 	public Account getAccountByID(int user_id) {
-		//Account oldAccount = null;
-		//old account pulled from database filled out;
-		String sqlGET = "SELECT * FROM accounts WHERE user_id = ?";
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGET, user_id);
+		String sql = "SELECT * FROM accounts WHERE user_id = ?";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user_id);
 
 		if (results.next()) {
 			return mapRowToAccount(results);
