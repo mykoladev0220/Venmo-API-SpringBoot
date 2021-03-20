@@ -26,27 +26,20 @@ public class JdbcUserDAO implements UserDAO {
 	
 	@Override
 	public int getUserIdByAccountId(int accountId) {
-		
 		String sql = "SELECT user_id FROM accounts WHERE account_id = ?";
-		
 		int returnedAccountId = 0;
-		returnedAccountId = jdbcTemplate.queryForObject(sql, int.class, accountId);
-		
-		return returnedAccountId;
+		return returnedAccountId = jdbcTemplate.queryForObject(sql, int.class, accountId);
 	}
 	
 	@Override
 	public String getUsernameByAccountId(int accountId) {
-		
 		String sql = "SELECT username FROM users" + 
 				" INNER JOIN accounts" + 
 				" ON users.user_id = accounts.user_id" + 
 				" WHERE accounts.account_id = ?";
 		
 		String username = "";
-		username = jdbcTemplate.queryForObject(sql, String.class, accountId);
-		
-		return username;
+		return username = jdbcTemplate.queryForObject(sql, String.class, accountId);
 	}
 	
 	@Override
@@ -62,9 +55,10 @@ public class JdbcUserDAO implements UserDAO {
 
 	@Override
 	public List<User> findAll() {
-		List<User> users = new ArrayList<>();
 		String sql = "SELECT user_id, username, password_hash FROM users;";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+		
+		List<User> users = new ArrayList<>();
 		while(results.next()) {
 			User user = mapRowToUser(results);
 			users.add(user);
@@ -76,6 +70,7 @@ public class JdbcUserDAO implements UserDAO {
 	public User findByUsername(String username) throws UsernameNotFoundException {
 		String sql = "SELECT user_id, username, password_hash FROM users WHERE username ILIKE ?;";
 		SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, username);
+		
 		if (rowSet.next()){
 			return mapRowToUser(rowSet);
 		}
@@ -84,18 +79,15 @@ public class JdbcUserDAO implements UserDAO {
 
 	@Override
 	public boolean create(String username, String password) {
-
-		// create user
 		String sql = "INSERT INTO users (username, password_hash) VALUES (?, ?) RETURNING user_id";
 		String password_hash = new BCryptPasswordEncoder().encode(password);
-		Integer newUserId;
+		int newUserId;
 		try {
 			newUserId = jdbcTemplate.queryForObject(sql, Integer.class, username, password_hash);
 		} catch (DataAccessException e) {
 			return false;
 		}
 
-		// create account
 		sql = "INSERT INTO accounts (user_id, balance) values(?, ?)";
 		try {
 			jdbcTemplate.update(sql, newUserId, STARTING_BALANCE);
@@ -107,8 +99,8 @@ public class JdbcUserDAO implements UserDAO {
 		
 	@Override
 	public BigDecimal getBalanceExchange(int id) {
-		BigDecimal balance = BigDecimal.valueOf(0);
 		String sql = "SELECT balance FROM accounts WHERE user_id = ?";
+		BigDecimal balance = BigDecimal.valueOf(0);
 		return balance = jdbcTemplate.queryForObject(sql, BigDecimal.class, id);
 	}
 
