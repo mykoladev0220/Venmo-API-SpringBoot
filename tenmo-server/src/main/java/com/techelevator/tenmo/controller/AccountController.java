@@ -32,7 +32,7 @@ public class AccountController {
 		accountDAO.updateAccountByID(account, userId);
 	}
 	
-	@RequestMapping(path = "accounts/balance/{userId}", method = RequestMethod.GET)
+	@RequestMapping(path = "/accounts/balance/{userId}", method = RequestMethod.GET)
 	public BigDecimal getBalanceByUserId(@PathVariable int userId) {
 		return accountDAO.getAccountBalanceByUserId(userId);
 	}
