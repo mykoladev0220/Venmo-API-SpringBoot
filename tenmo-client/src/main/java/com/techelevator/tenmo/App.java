@@ -110,7 +110,7 @@ public class App {
 
 	private boolean viewPendingRequests() {
 		Transfer[] transfers = null;
-		transfers = transferService.listPendingTransfersByAccountId(App.ID);
+		transfers = transferService.listPendingTransfersByUserId(App.ID);
 
 		int accountId = 0;
 		// gets account id by senderId
