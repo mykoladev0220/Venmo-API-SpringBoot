@@ -28,23 +28,23 @@ public class TransferController {
 		this.transferDAO = transfer;
 	}
 	
-	@RequestMapping(path= "transfers/{id}", method = RequestMethod.GET)
+	@RequestMapping(path= "/transfers/{id}", method = RequestMethod.GET)
 	public List<Transfer> listAllTransfersById(@PathVariable int id) {
 		return transferDAO.getAllTransfersByAccountId(id);
 	}
 	
 	@ResponseStatus(HttpStatus.CREATED)
-	@RequestMapping(path= "transfers", method = RequestMethod.POST)
+	@RequestMapping(path= "/transfers", method = RequestMethod.POST)
 	public void createSendRequest(@RequestBody Transfer transfer ) {
 		transferDAO.send(transfer);
 	}
 	
-	@RequestMapping(path= "transfers/pending/{accountId}", method = RequestMethod.GET)
+	@RequestMapping(path= "/transfers/pending/{accountId}", method = RequestMethod.GET)
 	public List<Transfer> listAllPendingTransfersById(@PathVariable int accountId) {
 		return transferDAO.getPendingTransfersByAccountId(accountId);
 	}
 	
-	@RequestMapping(path = "transfers/status/{transferId}/{statusId}", method = RequestMethod.PUT) 
+	@RequestMapping(path = "/transfers/status/{transferId}/{statusId}", method = RequestMethod.PUT) 
 	public void changeTransferStatusByTransferId(@PathVariable int transferId, @PathVariable int statusId) {
 		transferDAO.changeTransferStatusByTransferIdandStatus(transferId, statusId);
 	}
