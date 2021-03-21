@@ -65,6 +65,13 @@ public class JdbcUserDAO implements UserDAO {
 		}
 		return users;
 	}
+	
+	@Override
+	public BigDecimal getBalanceByUserId(int user_id) {
+		String sql = "SELECT balance FROM accounts WHERE user_id = ?";
+		BigDecimal balance = BigDecimal.valueOf(0);
+		return balance = jdbcTemplate.queryForObject(sql, BigDecimal.class, user_id);
+	}
 
 	@Override
 	public User findByUsername(String username) throws UsernameNotFoundException {
@@ -95,13 +102,6 @@ public class JdbcUserDAO implements UserDAO {
 			return false;
 		}
 		return true;
-	}
-		
-	@Override
-	public BigDecimal getBalanceExchange(int id) {
-		String sql = "SELECT balance FROM accounts WHERE user_id = ?";
-		BigDecimal balance = BigDecimal.valueOf(0);
-		return balance = jdbcTemplate.queryForObject(sql, BigDecimal.class, id);
 	}
 
 	private User mapRowToUser(SqlRowSet rs) {
