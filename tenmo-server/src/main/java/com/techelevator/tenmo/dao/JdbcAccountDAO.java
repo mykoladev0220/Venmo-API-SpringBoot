@@ -44,7 +44,7 @@ public class JdbcAccountDAO implements AccountDAO{
 	}
 	
 	@Override
-	public Account getAccountByID(int user_id) {
+	public Account getAccountById(int user_id) {
 		String sql = "SELECT * FROM accounts WHERE user_id = ?";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user_id);
 
@@ -55,7 +55,7 @@ public class JdbcAccountDAO implements AccountDAO{
 	}
 
 	@Override
-	public void updateAccountByID(Account account, int UserId) {
+	public void updateAccountById(Account account, int user_id) {
 		String sql = "UPDATE accounts SET balance = ? WHERE user_id = ?";
 		jdbcTemplate.update(sql, account.getBalance(), UserId);
 
