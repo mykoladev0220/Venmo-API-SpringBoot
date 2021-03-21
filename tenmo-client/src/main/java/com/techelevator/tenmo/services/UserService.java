@@ -39,7 +39,7 @@ public class UserService {
 		return usersWithoutId;
 	}
 
-	public BigDecimal getBalanceByExchange() {
+	public BigDecimal getBalance() {
 		BigDecimal currentBalance = new BigDecimal("0");
 		currentBalance = restTemplate.exchange (BASE_URL + "balance/" + App.USERNAME, HttpMethod.GET, makeAuthEntity(), BigDecimal.class).getBody();
 		return currentBalance;
