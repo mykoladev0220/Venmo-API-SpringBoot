@@ -66,7 +66,7 @@ public class TransferService {
 		return newTransfer;
 	}
 	
-	public Transfer[] listPendingTransfersByAccountId(int userId) {
+	public Transfer[] listPendingTransfersByUserId(int userId) {
 		int accountId = 0;
 		accountId = restTemplate.exchange(BASE_URL + "accounts/" + userId, HttpMethod.GET, makeAuthEntity(), int.class).getBody();
 		
