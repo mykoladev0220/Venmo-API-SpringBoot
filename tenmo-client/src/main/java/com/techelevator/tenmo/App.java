@@ -87,7 +87,7 @@ public class App {
 	}
 
 	private void viewCurrentBalance() {
-		BigDecimal balance = userService.getBalanceByExchange();
+		BigDecimal balance = userService.getBalance();
 		System.out.println("Your current account balance is: $" + balance);
 	}
 
