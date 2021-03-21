@@ -17,34 +17,34 @@ import com.techelevator.tenmo.model.User;
 @RestController
 public class UserController {
 	
-	private JdbcUserDAO user;
+	private JdbcUserDAO userJdbc;
 	
 	public UserController(JdbcUserDAO user) {
-		this.user = user;
+		this.userJdbc = user;
 	}
 	
 	@RequestMapping(path= "/users", method = RequestMethod.GET)
 	public List<User> listAllUsers() {
-		return user.findAll();
+		return userJdbc.findAll();
 	}
 	
 	@RequestMapping(path= "/users/{username}", method = RequestMethod.GET)
 	public User viewUser(@PathVariable String username) {
-		return user.findByUsername(username);
+		return userJdbc.findByUsername(username);
 	}
 	
 	@RequestMapping(path= "/balance/{username}", method = RequestMethod.GET)
 	public BigDecimal viewBalanceExchange(@PathVariable String username) {
-		return user.getBalanceExchange(user.findIdByUsername(username));
+		return userJdbc.getBalanceExchange(user.findIdByUsername(username));
 	}
 	
 	@RequestMapping(path = "/users/account/{accountId}", method = RequestMethod.GET)
 	public String viewUsernameByAccountId(@PathVariable int accountId) {
-		return user.getUsernameByAccountId(accountId);
+		return userJdbc.getUsernameByAccountId(accountId);
 	}
 	
 	@RequestMapping(path = "/users/userId/{accountId}", method = RequestMethod.GET)
 	public int viewUserIdByAccountId(@PathVariable int accountId) {
-		return user.getUserIdByAccountId(accountId);
+		return userJdbc.getUserIdByAccountId(accountId);
 	}
 }
