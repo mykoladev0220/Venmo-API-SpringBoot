@@ -20,31 +20,31 @@ import com.techelevator.tenmo.model.Transfer;
 @RestController
 public class TransferController {
 
-	private JdbcTransferDAO transferDAO;
+	private JdbcTransferDAO transferJdbc;
 	
 	public TransferController(JdbcTransferDAO transfer) {
-		this.transferDAO = transfer;
+		this.transferJdbc = transfer;
 	}
 	
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(path= "/transfers", method = RequestMethod.POST)
 	public void createTransfer(@RequestBody Transfer transfer ) {
-		transferDAO.send(transfer);
+		transferJdbc.send(transfer);
 	}
 	
 	@RequestMapping(path= "/transfers/{id}", method = RequestMethod.GET)
 	public List<Transfer> listAllTransfersById(@PathVariable int id) {
-		return transferDAO.getAllTransfersByAccountId(id);
+		return transferJdbc.getAllTransfersByAccountId(id);
 	}
 	
 	@RequestMapping(path= "/transfers/pending/{accountId}", method = RequestMethod.GET)
 	public List<Transfer> listAllPendingTransfersById(@PathVariable int accountId) {
-		return transferDAO.getPendingTransfersByAccountId(accountId);
+		return transferJdbc.getPendingTransfersByAccountId(accountId);
 	}
 	
 	@RequestMapping(path = "/transfers/status/{transferId}/{statusId}", method = RequestMethod.PUT) 
 	public void changeTransferStatusByTransferId(@PathVariable int transferId, @PathVariable int statusId) {
-		transferDAO.changeTransferStatusByTransferIdandStatus(transferId, statusId);
+		transferJdbc.changeTransferStatusByTransferIdandStatus(transferId, statusId);
 	}
 	
 }
