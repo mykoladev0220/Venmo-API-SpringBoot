@@ -7,17 +7,17 @@ import java.util.List;
 
 public interface UserDAO {
 
-    List<User> findAll();
-
-    User findByUsername(String username);
-
-    int findIdByUsername(String username);
-
-    boolean create(String username, String password);
+    public List<User> findAll();
     
-    String getUsernameByAccountId(int accountId);
+    public User findByUsername(String username);
+
+    public int findIdByUsername(String username);
+
+    public boolean create(String username, String password);
     
-    int getUserIdByAccountId(int accountId);
+    public String getUsernameByAccountId(int accountId);
     
-    BigDecimal getBalanceExchange(int id);
+    public int getUserIdByAccountId(int accountId);
+    
+    public BigDecimal getBalanceExchange(int id);
 }
