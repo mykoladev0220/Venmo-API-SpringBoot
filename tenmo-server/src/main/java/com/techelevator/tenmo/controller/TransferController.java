@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.techelevator.tenmo.dao.JdbcAccountDAO;
 import com.techelevator.tenmo.dao.JdbcTransferDAO;
 import com.techelevator.tenmo.dao.TransferDAO;
-import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 
 @PreAuthorize("isAuthenticated()")
@@ -28,15 +26,15 @@ public class TransferController {
 		this.transferDAO = transfer;
 	}
 	
-	@RequestMapping(path= "/transfers/{id}", method = RequestMethod.GET)
-	public List<Transfer> listAllTransfersById(@PathVariable int id) {
-		return transferDAO.getAllTransfersByAccountId(id);
-	}
-	
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(path= "/transfers", method = RequestMethod.POST)
 	public void createTransfer(@RequestBody Transfer transfer ) {
 		transferDAO.send(transfer);
+	}
+	
+	@RequestMapping(path= "/transfers/{id}", method = RequestMethod.GET)
+	public List<Transfer> listAllTransfersById(@PathVariable int id) {
+		return transferDAO.getAllTransfersByAccountId(id);
 	}
 	
 	@RequestMapping(path= "/transfers/pending/{accountId}", method = RequestMethod.GET)
