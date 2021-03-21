@@ -12,12 +12,13 @@ public interface UserDAO {
     public User findByUsername(String username);
 
     public int findIdByUsername(String username);
+    
+    public BigDecimal getBalanceByUserId(int user_id);
 
     public boolean create(String username, String password);
     
     public String getUsernameByAccountId(int accountId);
     
     public int getUserIdByAccountId(int accountId);
-    
-    public BigDecimal getBalanceExchange(int id);
+   
 }
