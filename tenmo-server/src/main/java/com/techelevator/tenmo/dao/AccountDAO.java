@@ -7,7 +7,7 @@ import com.techelevator.tenmo.model.Account;
 
 public interface AccountDAO {
 
-	public Account getAccountByAccountId(int account_id);
+	public Account getAccountByUserId(int user_id);
 	
 	public int getAccountIdByUserId(int user_id);
 	
