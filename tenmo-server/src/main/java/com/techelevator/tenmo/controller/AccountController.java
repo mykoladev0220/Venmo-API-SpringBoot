@@ -16,25 +16,25 @@ import com.techelevator.tenmo.model.Account;
 @RestController
 public class AccountController {
 
-	private JdbcAccountDAO accountDAO;
+	private JdbcAccountDAO accountJdbc;
 	
 	public AccountController(JdbcAccountDAO account) {
-		this.accountDAO = account;
+		this.accountJdbc = account;
 	}
 	
 	@RequestMapping(path = "/accounts/{userId}", method = RequestMethod.GET) 
 	public int getAccountByID(@PathVariable int userId) {
-		return accountDAO.getAccountIdByUserId(userId);
+		return accountJdbc.getAccountIdByUserId(userId);
 	}
 	
 	@RequestMapping(path = "/accounts/{userId}",method = RequestMethod.PUT)
 	public void updateAccountByID(@RequestBody Account account, @PathVariable int userId) {
-		accountDAO.updateAccountByID(account, userId);
+		accountJdbc.updateAccountByID(account, userId);
 	}
 	
 	@RequestMapping(path = "/accounts/balance/{userId}", method = RequestMethod.GET)
 	public BigDecimal getBalanceByUserId(@PathVariable int userId) {
-		return accountDAO.getAccountBalanceByUserId(userId);
+		return accountJdbc.getAccountBalanceByUserId(userId);
 	}
 	
 }
