@@ -7,13 +7,13 @@ import com.techelevator.tenmo.model.Transfer;
 
 public interface TransferDAO {
 	
-	void send(Transfer transfer);
+	public void send(Transfer transfer);
 	
-	List<Transfer> getAllTransfers();
+	public List<Transfer> getAllTransfers();
 	
-	List<Transfer> getAllTransfersByAccountId(int accountId);
+	public List<Transfer> getAllTransfersByAccountId(int accountId);
 	
-	List<Transfer> getPendingTransfersByAccountId(int accountId);
+	public List<Transfer> getPendingTransfersByAccountId(int accountId);
 	
-	void changeTransferStatusByTransferIdandStatus(int transferId, int transferStatus);
+	public void changeTransferStatusByTransferIdandStatus(int transferId, int transferStatus);
 }
